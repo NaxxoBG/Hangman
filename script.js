@@ -1,7 +1,12 @@
 
-var HangPerson = HangPerson || {};
+var Hangman = Hangman || {};
 
-HangPerson.person = function() {
+$(document).ready(() => {
+    gameWorld = Hangman.gameWorld()
+    $('#letters').hide()
+})
+
+Hangman.gameWorld = function() {
     var Engine = Matter.Engine,
         Render = Matter.Render,
         Runner = Matter.Runner,
@@ -86,7 +91,7 @@ HangPerson.person = function() {
     };
 };
 
-var randomArticle;
+
 function generateButtons() {
     var letters = "abcdefghijklmnopqrstuvwxyz"
     for (const [i, letter] of letters.split("").entries()) {
@@ -116,14 +121,16 @@ function disintegrateLetter(el) {
         }
     })
     particle.disintegrate()
+    
 }
-
 
 async function extractRandomWord() {
     randomArticle = await $.get("https://en.wikipedia.org/w/api.php?action=query&generator=random&format=json&origin=*&grnnamespace=0&grnlimit=1&prop=extracts&explaintext&exlimit=1")
-        .then(data => Object.values(data.query.pages)[0].extract);
-    generateButtons();
-    console.log(randomArticle)
+        .then(data => {
+            generateButtons()
+            return Object.values(data.query.pages)[0].extract
+        }
+    )
 }
 
 //#region Wikimedia API 
