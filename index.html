@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="matter.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="particles.css">
+    <title>The Hangman</title>
+</head>
+    <body>
+        <div id="cvas"></div>
+        <div class="btnWrapper">
+            <button class="btn" onclick="btnHandler(this)"><b>Start Game</b></button>
+        </div>
+        <div style="overflow: hidden; padding: 30px 20px 10px 20px;">
+            <div id="letters"></div>
+        </div>
+        <script>
+            (function() {
+                HangPerson.person();
+                $('#letters').hide()
+            })();
+        </script>
+        <script src="anime.min.js"></script>
+        <script src="particles.js"></script>
+    </body>
+</html>
