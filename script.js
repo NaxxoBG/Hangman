@@ -2,7 +2,7 @@
 var Hangman = Hangman || {};
 
 $(document).ready(() => {
-    gameWorld = Hangman.gameWorld()
+    let gameWorld = Hangman.gameWorld()
     $('#letters').hide()
 })
 
@@ -100,13 +100,13 @@ function generateButtons() {
     }
 }
 
-function btnHandler(el) {
+async function btnHandler(el) {
     new Particles(`.${el.className}`, {
         direction: 'left',
         style: 'fill'
     }).disintegrate()
     $('#letters').show();
-    extractRandomWord()
+    Hangman.word = await extractRandomWord()
 }
 
 function disintegrateLetter(el) {
@@ -121,16 +121,23 @@ function disintegrateLetter(el) {
         }
     })
     particle.disintegrate()
-    
+}
+
+function selectRandomWord(randArt) {
+    let words = randArt.match(/[a-zA-Z]{6,}/g)
+    return words[Math.floor(Math.random() * words.length)]
 }
 
 async function extractRandomWord() {
-    randomArticle = await $.get("https://en.wikipedia.org/w/api.php?action=query&generator=random&format=json&origin=*&grnnamespace=0&grnlimit=1&prop=extracts&explaintext&exlimit=1")
+    try {
+        return await $.get("https://en.wikipedia.org/w/api.php?action=query&generator=random&format=json&origin=*&grnnamespace=0&grnlimit=1&prop=extracts&explaintext&exlimit=1")
         .then(data => {
             generateButtons()
             return Object.values(data.query.pages)[0].extract
-        }
-    )
+        }).then(selectRandomWord)
+    } catch (error) {
+        return 'Failed to retrieve word'
+    }
 }
 
 //#region Wikimedia API 
