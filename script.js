@@ -107,6 +107,9 @@ async function btnHandler(el) {
     }).disintegrate()
     $('#letters').show();
     Hangman.word = await extractRandomWord()
+    for (let i = 0; i < Hangman.word.length; i++) {
+        $('.wordDash').append($("<div>", {class: `dash${i}`, text: "_"}))
+    }    
 }
 
 function disintegrateLetter(el) {
