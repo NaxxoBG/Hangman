@@ -95,7 +95,7 @@ Hangman.gameWorld = function() {
 function generateButtons() {
     var letters = "abcdefghijklmnopqrstuvwxyz"
     for (const [i, letter] of letters.split("").entries()) {
-        $("#letters").append(`<div class="btnWrapperL" style="width:${Math.floor(window.innerWidth/26)}px;"><div class="letter${i}">${letter}</div></div>`)
+        $("#letters").append(`<div class="btnWrapperL" style="width:${Math.floor(window.innerWidth/27)}px;"><div class="letter${i}">${letter}</div></div>`)
         $(`.letter${i}`).click((e) => disintegrateLetter(e.target))
     }
 }
