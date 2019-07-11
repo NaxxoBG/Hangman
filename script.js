@@ -107,8 +107,9 @@ async function btnHandler(el) {
     }).disintegrate()
     $('#letters').show();
     Hangman.word = await extractRandomWord()
+    Hangman.life = 6
     for (let i = 0; i < Hangman.word.length; i++) {
-        $('.wordDash').append($("<div>", {class: `dash${i}`, text: "_"}))
+        $('.wordDash').append($("<div>", {class: 'dash', text: "_", "data-index": i}))
     }    
 }
 
@@ -124,6 +125,17 @@ function disintegrateLetter(el) {
         }
     })
     particle.disintegrate()
+
+    if (Hangman.word.search(el.innerHTML) != -1) {
+        while (Hangman.word.search(el.innerHTML) != -1 && Hangman.life != 0) {
+            $(`div[data-index=${Hangman.word.search(el.innerHTML)}]`)[0].innerHTML = el.innerHTML
+            console.log("Tries left: " + Hangman.life)
+            Hangman.word = Hangman.word.replace(el.innerHTML, "-")
+        }
+    } else {
+        Hangman.life -= 1
+        console.log("Tries left: " + Hangman.life)
+    }
 }
 
 function selectRandomWord(randArt) {
