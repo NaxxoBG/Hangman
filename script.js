@@ -1,4 +1,3 @@
-
 var Hangman = Hangman || {};
 
 $(document).ready(() => {
@@ -6,7 +5,7 @@ $(document).ready(() => {
     $('#letters').hide()
 })
 
-Hangman.gameWorld = function() {
+Hangman.gameWorld = function () {
     var Engine = Matter.Engine,
         Render = Matter.Render,
         Runner = Matter.Runner,
@@ -47,21 +46,35 @@ Hangman.gameWorld = function() {
     // add bodies
     World.add(world, [
         // walls
-        Bodies.rectangle(window.innerWidth/2, 10, window.innerWidth, 20, { isStatic: true }),
-        Bodies.rectangle(10, 230, 20, 420, { isStatic: true }),
-        Bodies.rectangle(window.innerWidth-10, 230, 20, 420, { isStatic: true }),
-        Bodies.rectangle(window.innerWidth/2, 450, window.innerWidth, 20, { isStatic: true }),
+        Bodies.rectangle(window.innerWidth / 2, 10, window.innerWidth, 20, {
+            isStatic: true
+        }),
+        Bodies.rectangle(10, 230, 20, 420, {
+            isStatic: true
+        }),
+        Bodies.rectangle(window.innerWidth - 10, 230, 20, 420, {
+            isStatic: true
+        }),
+        Bodies.rectangle(window.innerWidth / 2, 450, window.innerWidth, 20, {
+            isStatic: true
+        }),
     ]);
 
     World.add(world, [
-        Bodies.rectangle(400, 100, 60, 60, { frictionAir: 0.001 }),
-        Bodies.rectangle(500, 100, 60, 60, { frictionAir: 0.05 }),
-        Bodies.rectangle(600, 100, 60, 60, { frictionAir: 0.1 })
+        Bodies.rectangle(400, 100, 60, 60, {
+            frictionAir: 0.001
+        }),
+        Bodies.rectangle(500, 100, 60, 60, {
+            frictionAir: 0.05
+        }),
+        Bodies.rectangle(600, 100, 60, 60, {
+            frictionAir: 0.1
+        })
     ])
-    
+
 
     //World.add(world, Composites.stack);
-    
+
     // add mouse control
     var mouse = Mouse.create(render.canvas),
         mouseConstraint = MouseConstraint.create(engine, {
@@ -84,7 +97,7 @@ Hangman.gameWorld = function() {
         runner: runner,
         render: render,
         canvas: render.canvas,
-        stop: function() {
+        stop: function () {
             Matter.Render.stop(render);
             Matter.Runner.stop(runner);
         }
@@ -109,8 +122,12 @@ async function btnHandler(el) {
     Hangman.word = await extractRandomWord()
     Hangman.life = 6
     for (let i = 0; i < Hangman.word.length; i++) {
-        $('.wordDash').append($("<div>", {class: 'dash', text: "_", "data-index": i}))
-    }    
+        $('.wordDash').append($("<div>", {
+            class: 'dash',
+            text: "_",
+            "data-index": i
+        }))
+    }
 }
 
 function disintegrateLetter(el) {
@@ -140,16 +157,16 @@ function disintegrateLetter(el) {
 
 function selectRandomWord(randArt) {
     let words = randArt.match(/[a-zA-Z]{6,}/g)
-    return words[Math.floor(Math.random() * words.length)]
+    return words[Math.floor(Math.random() * words.length)].toLowerCase()
 }
 
 async function extractRandomWord() {
     try {
         return await $.get("https://en.wikipedia.org/w/api.php?action=query&generator=random&format=json&origin=*&grnnamespace=0&grnlimit=1&prop=extracts&explaintext&exlimit=1")
-        .then(data => {
-            generateButtons()
-            return Object.values(data.query.pages)[0].extract
-        }).then(selectRandomWord)
+            .then(data => {
+                generateButtons()
+                return Object.values(data.query.pages)[0].extract
+            }).then(selectRandomWord)
     } catch (error) {
         return 'Failed to retrieve word'
     }
